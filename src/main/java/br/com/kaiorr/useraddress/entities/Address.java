@@ -1,11 +1,14 @@
 package br.com.kaiorr.useraddress.entities;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "tb_address")
-public class Address {
+public class Address implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +32,9 @@ public class Address {
     @NotBlank(message = "Postal Code is required!")
     private String postalCode;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    public Address(){}
 
-    public Address(){
-    }
-
-    public Address(Long id, String place, String complement, String district, String city, String state, String postalCode, User user) {
+    public Address(Long id, String place, String complement, String district, String city, String state, String postalCode) {
         this.id = id;
         this.place = place;
         this.complement = complement;
@@ -44,7 +42,6 @@ public class Address {
         this.city = city;
         this.state = state;
         this.postalCode = postalCode;
-        this.user = user;
     }
 
     public Long getId() {
@@ -103,11 +100,28 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public User getUser() {
-        return user;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Address other = (Address) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 }
