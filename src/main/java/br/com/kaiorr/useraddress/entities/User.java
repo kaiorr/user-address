@@ -19,14 +19,14 @@ public class User implements Serializable {
     @NotNull
     private String name;
 
-    @Column(nullable = false, unique=true)
+    @Column(nullable = false, length = 250, unique=true)
     private String email;
 
-    @Column(nullable = false, unique=true)
+    @Column(nullable = false, length = 11, unique=true)
     private String cpf;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant birthDate;
+    @Column(nullable = false)
+    private String birthDate;
 
     @ManyToMany
     @JoinTable(name= "tb_user_address",
@@ -37,7 +37,7 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(Long id, String name, String email, String cpf, Instant birthDate) {
+    public User(Long id, String name, String email, String cpf, String birthDate) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -77,11 +77,11 @@ public class User implements Serializable {
         this.cpf = cpf;
     }
 
-    public Instant getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Instant birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
