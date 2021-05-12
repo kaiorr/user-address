@@ -4,6 +4,7 @@ import br.com.kaiorr.useraddress.entities.Address;
 import br.com.kaiorr.useraddress.entities.User;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,13 +16,13 @@ public class UserDTO implements Serializable {
     private String name;
     private String cpf;
     private String email;
-    private String birthDate;
+    private Instant birthDate;
 
     private List<AddressDTO> address = new ArrayList<>();
 
     public UserDTO() {}
 
-    public UserDTO(Long id, String name, String cpf, String email, String birthDate) {
+    public UserDTO(Long id, String name, String cpf, String email, Instant birthDate) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
@@ -75,11 +76,11 @@ public class UserDTO implements Serializable {
         this.email = email;
     }
 
-    public String getBirthDate() {
+    public Instant getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(Instant birthDate) {
         this.birthDate = birthDate;
     }
 

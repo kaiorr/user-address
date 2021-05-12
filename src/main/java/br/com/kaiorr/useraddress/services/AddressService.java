@@ -3,12 +3,13 @@ package br.com.kaiorr.useraddress.services;
 import br.com.kaiorr.useraddress.dto.AddressDTO;
 import br.com.kaiorr.useraddress.entities.Address;
 import br.com.kaiorr.useraddress.repositories.AddressRepository;
-import br.com.kaiorr.useraddress.services.exceptions.ArtefactNotFoundException;
+import br.com.kaiorr.useraddress.services.exceptions.ResourceNotFoundException;
 import br.com.kaiorr.useraddress.services.exceptions.DataBaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class AddressService {
     @Transactional(readOnly = true)
     public AddressDTO findById(Long id) {
         Optional<Address> obj = addressRepository.findById(id);
-        Address entity = obj.orElseThrow(() -> new ArtefactNotFoundException("Entity not found"));
+        Address entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 
         return new AddressDTO(entity);
     }
@@ -45,6 +46,19 @@ public class AddressService {
         }
         catch (ConstraintViolationException e) {
             throw new DataBaseException("Integrity Violation");
+        }
+    }
+
+    @Transactional
+    public AddressDTO update(Long id, AddressDTO dto) {
+        try {
+            Address entity = addressRepository.getOne(id);
+            dtoToEntity(dto, entity);
+            entity= addressRepository.save(entity);
+            return  new AddressDTO(entity);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Id not found! " +id);
         }
     }
 
