@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/addresses")
 public class AddressController {
@@ -38,7 +39,7 @@ public class AddressController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AddressDTO> update(@PathVariable Long id, @RequestBody AddressDTO dto){
+    public ResponseEntity<AddressDTO> update(@PathVariable("id") Long id, @RequestBody AddressDTO dto){
         dto = addressService.update(id,dto);
         return ResponseEntity.ok().body(dto);
     }
